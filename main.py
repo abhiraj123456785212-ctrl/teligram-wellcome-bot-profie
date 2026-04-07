@@ -8,6 +8,7 @@ from firebase_admin import credentials, db
 import threading
 from flask import Flask
 
+# 🌐 Flask Web Server
 web_app = Flask(__name__)
 
 @web_app.route("/")
@@ -19,15 +20,18 @@ def run_web():
     web_app.run(host="0.0.0.0", port=port)
 
 threading.Thread(target=run_web, daemon=True).start()
+
 # 🔹 Import Systems
 from start import register_start
 from rule import register_rules
 
+# 🔐 Load ENV
 load_dotenv()
 
 API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+SUPPORT_ID = os.getenv("SUPPORT_ID")  # ✅ NEW
 
 # 🔥 Firebase Initialize
 if not firebase_admin._apps:
@@ -36,6 +40,7 @@ if not firebase_admin._apps:
         'databaseURL': 'https://teligram-welcome-bot-default-rtdb.firebaseio.com/'
     })
 
+# 🤖 Bot Init
 app = Client(
     "welcome_bot",
     api_id=API_ID,
@@ -47,77 +52,77 @@ app = Client(
 register_start(app)
 register_rules(app)
 
-
+# 🚀 Welcome System
 @app.on_chat_member_updated()
 async def welcome(client: Client, member: ChatMemberUpdated):
+    try:
+        if member.new_chat_member and not member.old_chat_member:
 
-    if member.new_chat_member and not member.old_chat_member:
+            user = member.new_chat_member.user
+            name = user.first_name
+            user_id = user.id
+            chat_id = str(member.chat.id)
+            username = f"@{user.username}" if user.username else "No Username"
 
-        user = member.new_chat_member.user
-        name = user.first_name
-        user_id = user.id
-        chat_id = str(member.chat.id)
-        username = f"@{user.username}" if user.username else "No Username"
+            full_user = await client.get_users(user.id)
+            bio = getattr(full_user, "bio", None) or "Not Available"
 
-        full_user = await client.get_users(user.id)
-        bio = getattr(full_user, "bio", None) or "Not Available"
+            # ===== LOAD BACKGROUND =====
+            bg = Image.open("bg.png").convert("RGBA")
+            bg_width, bg_height = bg.size
 
-        # ===== LOAD BACKGROUND =====
-        bg = Image.open("bg.png").convert("RGBA")
-        bg_width, bg_height = bg.size
+            size = 200
+            border_size = 6
 
-        size = 200
-        border_size = 6
+            x_position = bg_width - size - 40
+            y_position = 40
 
-        x_position = bg_width - size - 40
-        y_position = 40
+            # ===== PROFILE PHOTO =====
+            if full_user.photo:
+                photo_path = await client.download_media(full_user.photo.big_file_id)
+                pfp = Image.open(photo_path).resize((size, size)).convert("RGBA")
+            else:
+                photo_path = None
+                pfp = Image.new("RGBA", (size, size), (80, 80, 80, 255))
 
-        # ===== PROFILE PHOTO =====
-        if full_user.photo:
-            photo_path = await client.download_media(full_user.photo.big_file_id)
-            pfp = Image.open(photo_path).resize((size, size)).convert("RGBA")
-        else:
-            photo_path = None
-            pfp = Image.new("RGBA", (size, size), (80, 80, 80, 255))
+            # ===== CIRCLE MASK =====
+            mask = Image.new("L", (size, size), 0)
+            draw_mask = ImageDraw.Draw(mask)
+            draw_mask.ellipse((0, 0, size, size), fill=255)
 
-        # ===== CIRCLE MASK =====
-        mask = Image.new("L", (size, size), 0)
-        draw_mask = ImageDraw.Draw(mask)
-        draw_mask.ellipse((0, 0, size, size), fill=255)
+            circle_pfp = Image.new("RGBA", (size, size))
+            circle_pfp.paste(pfp, (0, 0), mask)
 
-        circle_pfp = Image.new("RGBA", (size, size))
-        circle_pfp.paste(pfp, (0, 0), mask)
+            # ===== BORDER =====
+            border_total = size + border_size * 2
+            border = Image.new("RGBA", (border_total, border_total), (0, 0, 0, 0))
+            draw_border = ImageDraw.Draw(border)
 
-        # ===== BORDER =====
-        border_total = size + border_size * 2
-        border = Image.new("RGBA", (border_total, border_total), (0, 0, 0, 0))
-        draw_border = ImageDraw.Draw(border)
+            draw_border.ellipse((0, 0, border_total, border_total), fill=(0, 255, 255, 255))
+            draw_border.ellipse(
+                (4, 4, border_total - 4, border_total - 4),
+                outline=(180, 0, 255, 255),
+                width=3
+            )
 
-        draw_border.ellipse((0, 0, border_total, border_total), fill=(0, 255, 255, 255))
-        draw_border.ellipse(
-            (4, 4, border_total - 4, border_total - 4),
-            outline=(180, 0, 255, 255),
-            width=3
-        )
+            border.paste(circle_pfp, (border_size, border_size), circle_pfp)
+            bg.paste(border, (x_position, y_position), border)
 
-        border.paste(circle_pfp, (border_size, border_size), circle_pfp)
-        bg.paste(border, (x_position, y_position), border)
+            output = "welcome.png"
+            bg.save(output, quality=85, optimize=True)
 
-        output = "welcome.png"
-        bg.save(output)
+            # 🔥 LOAD RULES FROM FIREBASE
+            ref = db.reference(f"rules/{chat_id}")
+            rules_data = ref.get() or []
 
-        # 🔥 LOAD RULES FROM FIREBASE
-        ref = db.reference(f"rules/{chat_id}")
-        rules_data = ref.get() or []
+            formatted_rules = ""
+            for r in rules_data:
+                formatted_rules += f". {r}\n"
 
-        formatted_rules = ""
-        for r in rules_data:
-            formatted_rules += f". {r}\n"
+            if not formatted_rules:
+                formatted_rules = "No Rules Set"
 
-        if not formatted_rules:
-            formatted_rules = "No Rules Set"
-
-        caption = f"""
+            caption = f"""
 ✨ 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 {name}
 
 👤 Name : {name}
@@ -129,34 +134,42 @@ async def welcome(client: Client, member: ChatMemberUpdated):
 {formatted_rules}
 """
 
-        # 🔥 BUTTON
-        buttons = InlineKeyboardMarkup(
-            [
+            # 🔥 BUTTON (UPDATED)
+            buttons = InlineKeyboardMarkup(
                 [
-                    InlineKeyboardButton(
-                        "➕ Add me to your group",
-                        url=f"https://t.me/{client.me.username}?startgroup=true"
-                    )
+                    [
+                        InlineKeyboardButton(
+                            "➕ Add me to your group",
+                            url=f"https://t.me/{client.me.username}?startgroup=true"
+                        )
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            "🆘 Support",
+                            url=f"tg://user?id={SUPPORT_ID}"
+                        )
+                    ]
                 ]
-            ]
-        )
+            )
 
-        await client.send_photo(
-            member.chat.id,
-            photo=output,
-            caption=caption,
-            reply_markup=buttons
-        )
+            await client.send_photo(
+                member.chat.id,
+                photo=output,
+                caption=caption,
+                reply_markup=buttons
+            )
 
-        # Cleanup
-        if photo_path and os.path.exists(photo_path):
-            os.remove(photo_path)
+            # Cleanup
+            if photo_path and os.path.exists(photo_path):
+                os.remove(photo_path)
 
-        if os.path.exists(output):
-            os.remove(output)
+            if os.path.exists(output):
+                os.remove(output)
 
+    except Exception as e:
+        print(f"Error: {e}")
 
-# ✅ BOT START MESSAGE
+# ✅ BOT START
 from pyrogram import idle
 
 print("=================================")
