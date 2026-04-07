@@ -31,7 +31,7 @@ load_dotenv()
 API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-SUPPORT_ID = os.getenv("SUPPORT_ID")  # ✅ NEW
+SUPPORT_ID = os.getenv("SUPPORT_ID")
 
 # 🔥 Firebase Initialize
 if not firebase_admin._apps:
@@ -51,6 +51,9 @@ app = Client(
 # 🔹 Register Modules
 register_start(app)
 register_rules(app)
+
+# 🔥 GLOBAL USERNAME FIX
+BOT_USERNAME = None
 
 # 🚀 Welcome System
 @app.on_chat_member_updated()
@@ -134,13 +137,13 @@ async def welcome(client: Client, member: ChatMemberUpdated):
 {formatted_rules}
 """
 
-            # 🔥 BUTTON (UPDATED)
+            # 🔥 BUTTON FIXED
             buttons = InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
                             "➕ Add me to your group",
-                            url=f"https://t.me/{client.me.username}?startgroup=true"
+                            url=f"https://t.me/{BOT_USERNAME}?startgroup=true"
                         )
                     ],
                     [
@@ -178,8 +181,13 @@ print("=================================")
 
 app.start()
 
+# 🔥 USERNAME LOAD FIX
+me = app.get_me()
+BOT_USERNAME = me.username
+
 print("=================================")
 print("✅ Bot Successfully Started!")
+print(f"🤖 Bot Username: @{BOT_USERNAME}")
 print("🔥 Start + Welcome + Firebase Rule Active")
 print("=================================")
 
