@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "teligram-welcome-bot",
+  "private_key_id": "a7b317a15b00020cb25f22a12624b04ffdcc2481",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDNWc544f3vRs+2\nui35abeXm80JYrsat6MpxhmkKCiA2aa6HfWHkDRkeqkso3YdNfQR98+jfyUyFptq\ntpCaY8ljO+C93CmoqDKHQpaKi9/fHPAM9ZT/hoV44RsPuXBxm0tN3duEJJkFXUZK\ni2UYHH0Vie6FKUMv/5HEyiXKZubmRwsQVi5jSoWw3LaZL/dpqa01K5uRzkmlal8W\nZcjAJHf11zkeOw+NqBSY+S65HJHkQG6DHb+K/Xtq31iowVSW68Ba0gZeVWkJnh8a\n5Zz5H35DOzjDZJMXv/ppwIoOD/uiHKqCVRHzZajr44IbGmizhDJh54g0EBaMHmBQ\nYDegexiVAgMBAAECggEACAF3TjkpSDnPgUUy46Vedfep/7Ksrrb4EnnZqA+0vIk/\nucPPPbC+iihKDiZ1RWBEGqs5mhsr3Q8Kkhd5/brkMA02jtBVg3DDP4i2C8K2QKGF\nLkwouemJrJPCFVPacWNnhSqgEz/GA3KGegODNnRt3/gXp3NbXjStfymOXZyzZcjP\nYfA1VAFXwMrBaosWuPXkRHjA0vyAW1bH2XYpea/2Kisf5j7m2hXNWW5ay9XvVoa9\nvW7q1hB91rVrJudC4PnfPijeWM+B2k4ybW8PBz1+9GWqcVDTaoq+aryUNZuF6qKR\nIKVJtLRvpyManvOMe9jpAqLXkGW8SWthjMCAKUm8ZQKBgQDluj+ZQT3H6ajYnrXe\nyWKMmAb9l/V1j6ScmM5X92hpEI9RsO3/UperDb+xamUht1CsmgOuVewLdAxJTZYl\nJA+vE4OPPMucBoSK/JCMdnYp2jKVu+3GqLPOXsQyW1U5M2gtPc/uiXuEFcb54p9E\nshBAYZjahVvHiLwbpzLCL05urwKBgQDk1eDzfvbSmvcgrcbRyGUQJTTrWmcsEqcU\nuhvOLn1ZupGKgiliStRZ/XoxcLW3q0aAEINYjGfqe8IkEHtDdsrP2PrZ9MPytFdT\nbdbFiLiKOeEtAB90bNPEF4K13Qn2N7/V0cEezjI/u0iK0fa9EKSnmewQ2ijEhvld\ny/C/tVFd+wKBgBaNnGTNVOVleSAbJLvEhZpL6pPG8WAjRAPjtI5KScPWzls0xYjF\ncQJoDSO70EXpG1B2plndMZlGQVaI+W6YBboobkgHre2ZbjW+6eoAT0V4mHK+ym8w\nbMab4yMWeF1vQJEAeoNul+O1x50MtJon6RSJAFqjsQj70YvddExAHLEdAoGBANOD\nXYmzsTC5S/NIrJz7PW7O9TsVNIfoNcdSvqC1F+f4Ks57wQS5Zc5IHMnWBCDgjymQ\nGdee7+4stiXflg+lnZDAXh1XwEZ1qsHSpNGwreIV3axakLhsXtDBam/u/2Y14Xsh\nhf+TV57Q3RxzNj1LROYlv61T+Jqup4+rEbwhPDRBAoGAMYT0tSEJxPzr0X16yZBA\nffvD0+C3sX1kKQlRLxOUVoRX6dWjwl6tCWoJMwrKoY+MILnOGQgdWC3tS26Bqcg4\n4Sv77mLAHjycUx5hBAMFaYODfAbS8sQgSrzWq5ITWm/bA/ooVCHHfAhNGjUztHBE\nRHVdvos/oBHi6irJL7j7NKI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@teligram-welcome-bot.iam.gserviceaccount.com",
+  "client_id": "107146405097143458203",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40teligram-welcome-bot.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

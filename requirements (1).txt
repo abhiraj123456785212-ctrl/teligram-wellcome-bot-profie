@@ -1,0 +1,11 @@
+# =======================
+# Telegram Welcome Bot
+# =======================
+
+pyrogram==2.0.106
+tgcrypto
+Pillow>=10.0.0
+python-dotenv>=1.0.0
+
+# 🔥 Firebase
+firebase-admin>=6.5.0
