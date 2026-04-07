@@ -5,7 +5,20 @@ from PIL import Image, ImageDraw
 from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, db
+import threading
+from flask import Flask
 
+web_app = Flask(__name__)
+
+@web_app.route("/")
+def home():
+    return "Bot is running successfully!"
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    web_app.run(host="0.0.0.0", port=port)
+
+threading.Thread(target=run_web, daemon=True).start()
 # 🔹 Import Systems
 from start import register_start
 from rule import register_rules
